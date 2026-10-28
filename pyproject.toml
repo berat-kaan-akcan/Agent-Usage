@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-usage-widget"
+version = "1.0.0"
+description = "Cross-platform desktop widget and CLI that tracks Claude Code, OpenAI Codex, and Google Antigravity usage and verified quotas."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Agent Usage Contributors" }
+]
+keywords = ["claude-code", "codex", "antigravity", "ai-usage", "desktop-widget", "qt6", "gtk4"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: X11 Applications :: Qt",
+    "Environment :: X11 Applications :: GTK",
+    "Environment :: Win32 (MS Windows)",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: C++",
+]
+dependencies = []
+
+[project.optional-dependencies]
+qt = ["PySide6>=6.5.0"]
+dev = ["pytest>=7.0.0", "pyinstaller>=6.0.0"]
+
+[project.scripts]
+agent-usage = "agent_usage.cli:main"
+agent-usage-widget = "agent_usage.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
