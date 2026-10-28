@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Agent Usage Widget
+GenericName=AI Coding Usage Monitor
+Comment=Track Claude Code, OpenAI Codex, and Google Antigravity usage and quotas
+Exec=agent-usage-qt
+TryExec=agent-usage-qt
+Icon=agent-usage-widget
+Terminal=false
+Categories=Utility;Development;Monitor;
+Keywords=claude;codex;antigravity;ai;tokens;quota;widget;
+StartupNotify=false

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B"/>
+      <stop offset="100%" stop-color="#0F172A"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="112" height="112" rx="24" fill="url(#bg)" stroke="#334155" stroke-width="4"/>
+  <!-- Claude Bar -->
+  <rect x="24" y="32" width="80" height="14" rx="7" fill="#1E293B"/>
+  <rect x="24" y="32" width="56" height="14" rx="7" fill="#D97757"/>
+  <!-- Codex Bar -->
+  <rect x="24" y="57" width="80" height="14" rx="7" fill="#1E293B"/>
+  <rect x="24" y="57" width="42" height="14" rx="7" fill="#10A37F"/>
+  <!-- Antigravity Bar -->
+  <rect x="24" y="82" width="80" height="14" rx="7" fill="#1E293B"/>
+  <rect x="24" y="82" width="68" height="14" rx="7" fill="#4285F4"/>
+</svg>

@@ -1,0 +1,66 @@
+# Maintainer: Agent Usage Contributors <noreply@example.com>
+pkgname=agent-usage-widget
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Cross-platform desktop widget tracking Claude Code, OpenAI Codex, and Google Antigravity usage and quotas"
+arch=('x86_64' 'aarch64')
+url="https://github.com/berat-kaan-akcan/Agent-Usage"
+license=('MIT')
+depends=('python' 'qt6-base')
+optdepends=(
+  'python-gobject: GTK3 desktop widget backend'
+  'libayatana-appindicator: System tray support for GTK backend'
+  'pyside6: PySide6 Python UI backend'
+)
+makedepends=('cmake' 'ninja' 'gcc')
+source=()
+
+build() {
+  local root_dir="${startdir}/../.."
+  cmake -B "${srcdir}/build" -S "${root_dir}/native-qt" \
+    -GNinja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr
+  cmake --build "${srcdir}/build"
+}
+
+check() {
+  local root_dir="${startdir}/../.."
+  PYTHONPATH="${root_dir}/src" python3 -m unittest discover -s "${root_dir}/tests"
+  PYTHONPATH="${root_dir}/src" QT_QPA_PLATFORM=offscreen "${srcdir}/build/agent-usage-qt" --self-test
+}
+
+package() {
+  local root_dir="${startdir}/../.."
+
+  # Install Native Qt6 Binary
+  install -Dm755 "${srcdir}/build/agent-usage-qt" "${pkgdir}/usr/bin/agent-usage-qt"
+
+  # Install Python Library
+  install -d "${pkgdir}/usr/lib/agent-usage-widget/src"
+  cp -r "${root_dir}/src/agent_usage" "${pkgdir}/usr/lib/agent-usage-widget/src/"
+
+  # Install CLI and Widget Launcher Wrappers
+  install -d "${pkgdir}/usr/bin"
+  cat << 'EOF' > "${pkgdir}/usr/bin/agent-usage"
+#!/usr/bin/env bash
+export PYTHONPATH="/usr/lib/agent-usage-widget/src:${PYTHONPATH}"
+exec python3 -m agent_usage.cli "$@"
+EOF
+  chmod 755 "${pkgdir}/usr/bin/agent-usage"
+
+  cat << 'EOF' > "${pkgdir}/usr/bin/agent-usage-widget"
+#!/usr/bin/env bash
+export PYTHONPATH="/usr/lib/agent-usage-widget/src:${PYTHONPATH}"
+exec python3 -m agent_usage.main "$@"
+EOF
+  chmod 755 "${pkgdir}/usr/bin/agent-usage-widget"
+
+  # Install Desktop Entry, Icon, and License
+  install -Dm644 "${root_dir}/packaging/linux/agent-usage-widget.desktop" \
+    "${pkgdir}/usr/share/applications/agent-usage-widget.desktop"
+  install -Dm644 "${root_dir}/packaging/linux/agent-usage-widget.svg" \
+    "${pkgdir}/usr/share/icons/hicolor/scalable/apps/agent-usage-widget.svg"
+  install -Dm644 "${root_dir}/LICENSE" \
+    "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
